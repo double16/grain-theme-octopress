@@ -9,7 +9,7 @@ defaultTasks 'preview'
 
 ext {
     mainClassName = 'com.sysgears.grain.Main'
-    compatibilityVersion = JavaVersion.VERSION_1_5
+    compatibilityVersion = JavaVersion.VERSION_1_7
 }
 
 sourceCompatibility = compatibilityVersion
@@ -46,7 +46,7 @@ repositories {
 dependencies {
     compile "com.sysgears.grain:grain:$project.grainVersion"
 
-    compile 'org.codehaus.groovy:groovy:2.1.2'
+    compile 'org.codehaus.groovy:groovy:2.4.7'
 }
 
 sourceSets {
@@ -73,10 +73,6 @@ task gendeps {
             }
         }
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.8'
 }
 
 idea {
