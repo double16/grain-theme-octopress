@@ -2,9 +2,10 @@ apply plugin: 'maven'
 apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
+apply plugin: 'org.aim42.htmlSanityCheck'
 
 group = 'com.sysgears.grain'
-version = '0.4.0'
+version = '0.4.6'
 defaultTasks 'preview'
 
 ext {
@@ -26,6 +27,14 @@ buildscript {
         if (!project.grainVersion) {
             throw new RuntimeException('Grain version is not set in properties file')
         }
+    }
+    repositories {
+        maven {
+          url "http://repo.patdouble.com/"
+        }
+    }
+    dependencies {
+        classpath "org.aim42:htmlSanityCheck:0.9.6-SNAPSHOT"
     }
 }
 
@@ -93,3 +102,13 @@ task preview(type: JavaExec) {
     main = mainClassName
     args name
 }
+
+htmlSanityCheck {
+    dependsOn generate
+    sourceDir = file('target')
+    checkingResultsDir = file("${buildDir}/reports/htmlchecks")
+    checkExternalLinks = false
+}
+
+check.dependsOn htmlSanityCheck
+
