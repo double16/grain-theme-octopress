@@ -1,8 +1,23 @@
+buildscript {
+    project.ext {
+        grainProps = new Properties()
+        grainProps.load(new FileInputStream("$project.projectDir/application.properties"))
+        grainVersion = grainProps.getProperty('grain.version')
+
+        if (!project.grainVersion) {
+            throw new RuntimeException('Grain version is not set in properties file')
+        }
+    }
+}
+
+plugins {
+  id "org.aim42.htmlSanityCheck" version "0.9.6"
+}
+
 apply plugin: 'maven'
 apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
-apply plugin: 'org.aim42.htmlSanityCheck'
 
 group = 'com.sysgears.grain'
 version = '0.4.6'
@@ -17,26 +32,6 @@ sourceCompatibility = compatibilityVersion
 targetCompatibility = compatibilityVersion
 
 clean.doLast { ant.delete(dir: '.cache'); ant.delete(dir: 'target') }
-
-buildscript {
-    project.ext {
-        grainProps = new Properties()
-        grainProps.load(new FileInputStream("$project.projectDir/application.properties"))
-        grainVersion = grainProps.getProperty('grain.version')
-
-        if (!project.grainVersion) {
-            throw new RuntimeException('Grain version is not set in properties file')
-        }
-    }
-    repositories {
-        maven {
-          url "http://repo.patdouble.com/"
-        }
-    }
-    dependencies {
-        classpath "org.aim42:htmlSanityCheck:0.9.6-SNAPSHOT"
-    }
-}
 
 configurations.all {
     exclude group: 'commons-logging'
